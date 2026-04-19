@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ShopWave Support Ticket Agentic Platform</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient-one" aria-hidden="true"></div>
+    <div class="ambient ambient-two" aria-hidden="true"></div>
+    <main class="app-shell">
+      <section class="panel hero reveal">
+        <p class="eyebrow">Autonomous Ops Console</p>
+        <h1>ShopWave Support Ticket Agentic Platform</h1>
+        <p class="subtitle">Upload datasets, ingest policy knowledge, and process tickets asynchronously.</p>
+        <div class="metric-grid">
+          <button type="button" class="metric-card metric-filter active" data-filter="all" title="Show all tracked tickets">
+            <p class="metric-label">Tracked</p>
+            <p class="metric-value" id="metricTracked">0</p>
+          </button>
+          <button type="button" class="metric-card metric-filter" data-filter="resolved" title="Show resolved tickets only">
+            <p class="metric-label">Resolved</p>
+            <p class="metric-value" id="metricResolved">0</p>
+          </button>
+          <button type="button" class="metric-card metric-filter" data-filter="attention" title="Show tickets needing attention">
+            <p class="metric-label">Attention</p>
+            <p class="metric-value" id="metricAttention">0</p>
+          </button>
+        </div>
+      </section>
+
+      <section class="panel reveal" style="--stagger: 1;">
+        <div class="panel-headline">
+          <h2>Control Center</h2>
+          <span class="panel-hint">Connect data and launch automated resolution.</span>
+        </div>
+
+        <form id="uploadForm" class="form-grid">
+          <label class="field file-field">
+            <span>tickets.json</span>
+            <div class="file-picker">
+              <input type="file" id="tickets" accept=".json" />
+              <button type="button" class="file-clear-btn" data-file-input="tickets" disabled>Delete</button>
+            </div>
+          </label>
+          <label class="field file-field">
+            <span>customers.json</span>
+            <div class="file-picker">
+              <input type="file" id="customers" accept=".json" />
+              <button type="button" class="file-clear-btn" data-file-input="customers" disabled>Delete</button>
+            </div>
+          </label>
+          <label class="field file-field">
+            <span>orders.json</span>
+            <div class="file-picker">
+              <input type="file" id="orders" accept=".json" />
+              <button type="button" class="file-clear-btn" data-file-input="orders" disabled>Delete</button>
+            </div>
+          </label>
+          <label class="field file-field">
+            <span>products.json</span>
+            <div class="file-picker">
+              <input type="file" id="products" accept=".json" />
+              <button type="button" class="file-clear-btn" data-file-input="products" disabled>Delete</button>
+            </div>
+          </label>
+          <label class="field file-field full-width">
+            <span>knowledge_base.md</span>
+            <div class="file-picker">
+              <input type="file" id="knowledgeBase" accept=".md,.markdown,text/markdown,text/plain" />
+              <button type="button" class="file-clear-btn" data-file-input="knowledgeBase" disabled>Delete</button>
+            </div>
+          </label>
+
+          <div class="actions full-width">
+            <button class="btn primary" type="submit" id="uploadBtn">Upload Files</button>
+            <button class="btn secondary" type="button" id="processBtn">Process Tickets</button>
+            <button class="btn tertiary" type="button" id="exportAuditBtn">Export Audit JSON</button>
+          </div>
+          <p id="actionMessage" class="action-message idle full-width">Ready. Upload one or more files to begin.</p>
+        </form>
+      </section>
+
+      <section class="panel status-panel reveal" style="--stagger: 2;">
+        <div class="panel-headline">
+          <h2>Processing Status</h2>
+          <span id="statusPulse" class="status-pulse idle">Idle</span>
+        </div>
+        <p id="timingSummary" class="timing-summary" hidden></p>
+        <pre id="output">No actions executed yet.</pre>
+        <div id="statusList" class="status-list"></div>
+      </section>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>

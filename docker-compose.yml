@@ -1,0 +1,42 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Backend/Dockerfile
+    container_name: support-backend
+    env_file:
+      - ./Backend/.env
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+    volumes:
+      - ./Backend/audit_json:/app/Backend/audit_json
+    restart: unless-stopped
+
+  celery_worker:
+    build:
+      context: .
+      dockerfile: Backend/Dockerfile
+    container_name: support-celery-worker
+    env_file:
+      - ./Backend/.env
+    depends_on:
+      - redis
+    volumes:
+      - ./Backend/audit_json:/app/Backend/audit_json
+    command: >
+      celery -A app.celery_app.celery_app worker
+      -Q priority,default
+      --loglevel=INFO
+      --concurrency=4
+    restart: unless-stopped
+
+  redis:
+    image: redis:7-alpine
+    container_name: support-redis
+    ports:
+      - "6379:6379"
+    restart: unless-stopped

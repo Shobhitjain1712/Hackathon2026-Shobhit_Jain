@@ -1,0 +1,368 @@
+{
+  "audit_logs": [
+    {
+      "id": 1782,
+      "ticket_id": "TKT-001",
+      "step": "celery_worker",
+      "action": "task_started",
+      "input": {
+        "task_id": "040e04e0-53c0-446e-a5a6-c40d30de2f12",
+        "idempotency_key": "TKT-001"
+      },
+      "output": {
+        "status": "processing"
+      },
+      "confidence": 1.0,
+      "timestamp": "2026-04-19T09:30:31.810431+00:00"
+    },
+    {
+      "id": 1783,
+      "ticket_id": "TKT-001",
+      "step": "classify_ticket",
+      "action": "ticket_classification",
+      "input": {
+        "ticket_id": "TKT-001"
+      },
+      "output": {
+        "classification": {
+          "urgency": "medium",
+          "category": "refund_or_return"
+        },
+        "reasoning_summary": "Ticket classified to drive routing and execution plan."
+      },
+      "confidence": 0.82,
+      "timestamp": "2026-04-19T09:30:39.550075+00:00"
+    },
+    {
+      "id": 1784,
+      "ticket_id": "TKT-001",
+      "step": "plan_actions",
+      "action": "plan_generated",
+      "input": {
+        "classification": {
+          "urgency": "medium",
+          "category": "refund_or_return"
+        }
+      },
+      "output": {
+        "plan": {
+          "steps": [
+            "Retrieve order details for order number ORD-1001 to confirm purchase date and item details.",
+            "Check the company's return policy to verify eligibility for a full refund based on the warranty and defect claims.",
+            "Communicate with the customer via email to confirm the refund process, including any necessary steps they need to take and the expected timeline for the refund."
+          ]
+        },
+        "reasoning_summary": "Action sequence generated for deterministic tool execution."
+      },
+      "confidence": 0.8,
+      "timestamp": "2026-04-19T09:30:45.909890+00:00"
+    },
+    {
+      "id": 1785,
+      "ticket_id": "TKT-001",
+      "step": "tool",
+      "action": "get_customer",
+      "input": {
+        "email": "alice.turner@email.com"
+      },
+      "output": {
+        "ok": true,
+        "message": "customer found",
+        "customer": {
+          "name": "Alice Turner",
+          "tier": "vip",
+          "email": "alice.turner@email.com",
+          "notes": "Long-standing VIP. Has had 2 refunds in the past year, both approved.",
+          "phone": "+1-415-555-0101",
+          "address": {
+            "zip": "94102",
+            "city": "San Francisco",
+            "state": "CA",
+            "street": "12 Maple Avenue"
+          },
+          "customer_id": "C001",
+          "total_spent": 6840.5,
+          "member_since": "2019-03-12",
+          "total_orders": 47
+        }
+      },
+      "confidence": 0.95,
+      "timestamp": "2026-04-19T09:30:59.155551+00:00"
+    },
+    {
+      "id": 1786,
+      "ticket_id": "TKT-001",
+      "step": "tool",
+      "action": "get_order",
+      "input": {
+        "order_id": "ORD-1001"
+      },
+      "output": {
+        "ok": true,
+        "order": {
+          "notes": "Delivered on time. No issues logged at delivery.",
+          "amount": 129.99,
+          "status": "delivered",
+          "order_id": "ORD-1001",
+          "quantity": 1,
+          "refund_id": "RF-DE2A637E24E5",
+          "order_date": "2024-02-10",
+          "product_id": "P001",
+          "customer_id": "C001",
+          "delivery_date": "2024-02-14",
+          "refund_status": "refunded",
+          "return_deadline": "2024-03-15",
+          "refund_processed_at": "2026-04-19T08:47:53.720482"
+        },
+        "message": "order found"
+      },
+      "confidence": 0.95,
+      "timestamp": "2026-04-19T09:31:02.930173+00:00"
+    },
+    {
+      "id": 1787,
+      "ticket_id": "TKT-001",
+      "step": "tool",
+      "action": "get_product",
+      "input": {
+        "product_id": "P001"
+      },
+      "output": {
+        "ok": true,
+        "message": "product found",
+        "product": {
+          "name": "ProSound Wireless Headphones",
+          "notes": "Return not accepted if seal is broken unless item is defective.",
+          "price": 129.99,
+          "category": "electronics",
+          "product_id": "P001",
+          "returnable": true,
+          "warranty_months": 12,
+          "return_window_days": 30
+        }
+      },
+      "confidence": 0.95,
+      "timestamp": "2026-04-19T09:31:06.433978+00:00"
+    },
+    {
+      "id": 1788,
+      "ticket_id": "TKT-001",
+      "step": "tool",
+      "action": "check_refund_eligibility",
+      "input": {
+        "order_id": "ORD-1001"
+      },
+      "output": {
+        "ok": true,
+        "reason": "Refund already processed for this order",
+        "message": "already refunded",
+        "eligible": false,
+        "warranty_claim": false
+      },
+      "confidence": 0.99,
+      "timestamp": "2026-04-19T09:31:10.069280+00:00"
+    },
+    {
+      "id": 1789,
+      "ticket_id": "TKT-001",
+      "step": "tool",
+      "action": "search_knowledge_base",
+      "input": {
+        "query": "refund request headphones bought pair last they return policy warranty defective"
+      },
+      "output": {
+        "ok": true,
+        "chunks": [
+          {
+            "id": 99,
+            "content": "# ShopWave Support Knowledge Base\n\n---\n\n## 1. Return Policy\n\n### Standard Return Window\n- Most products have a **30-day return window** from the date of delivery.\n- Items must be unused, in original condition, and in original packaging.\n- Proof of purchase (order ID) is required for all returns.\n\n### Category-Specific Return Windows\n- **Electronics accessories** (laptop stands, cables, mounts): 60-day return window.\n- **High-value electronics** (smart watches, tablets, laptops): 15-day return window only.\n- **Footwear**: 30-day return window. Item must be unworn with no outdoor use.\n- **Sports & fitness equipment**: 30-day return window. Non-returnable if used (hygiene policy).\n\n### Non-Returnable Items\n- Items registered online after purchase (e.g. Bluetooth devices, smart devices with activation).\n- Perishable goods.\n- Downloadable software or digital content.\n- Items marked as \"Final Sale\" at time of purchase."
+          },
+          {
+            "id": 100,
+            "content": "### Damaged or Defective on Arrival\n- If an item arrives damaged or defective, the customer is eligible for a **full refund or replacement regardless of return window**.\n- Photo evidence is required to process the claim.\n- The customer is not required to return the damaged item in most cases — agent should use judgment.\n\n### Wrong Item Delivered\n- If the wrong item is delivered, ShopWave will arrange return pickup and ship the correct item at no cost.\n- If the correct item is out of stock, a full refund is issued.\n- This does not count against the standard return window.\n\n---\n\n## 2. Refund Policy\n\n### Refund Eligibility\n- Refunds are only issued after eligibility is confirmed via the `check_refund_eligibility` tool.\n- Refunds are processed to the original payment method.\n- Standard processing time: **5–7 business days** after approval.\n- Refunds cannot be reversed once issued.\n\n### Partial Refunds\n- Partial refunds may be issued for items returned in non-original condition.\n- A restocking fee of 10% may apply to high-value electronics returned outside of 7 days."
+          },
+          {
+            "id": 101,
+            "content": "### Refund Exceptions by Customer Tier\n- **Standard**: Standard return and refund policy applies. No exceptions.\n- **Premium**: Agents may use judgment to approve borderline cases (e.g. 1–3 days outside return window). Requires supervisor note.\n- **VIP**: Extended leniency. Management pre-approvals may be on file. Always check customer notes before declining.\n\n---\n\n## 3. Warranty Policy\n\n### Coverage\n- Warranty covers **manufacturing defects only**.\n- Does not cover: physical damage caused by user, water damage, unauthorised modifications.\n\n### Warranty Periods by Category\n- Electronics (headphones, speakers, smart watches): 12 months from delivery date.\n- Home appliances (coffee makers, kitchen devices): 24 months from delivery date.\n- Electronics accessories: 6 months from delivery date.\n- Footwear and sports products: No warranty (covered only by return policy)."
+          }
+        ],
+        "message": "knowledge chunks retrieved"
+      },
+      "confidence": 0.88,
+      "timestamp": "2026-04-19T09:31:14.490503+00:00"
+    },
+    {
+      "id": 1790,
+      "ticket_id": "TKT-001",
+      "step": "execute_tools",
+      "action": "tools_executed",
+      "input": {
+        "plan": {
+          "steps": [
+            "Retrieve order details for order number ORD-1001 to confirm purchase date and item details.",
+            "Check the company's return policy to verify eligibility for a full refund based on the warranty and defect claims.",
+            "Communicate with the customer via email to confirm the refund process, including any necessary steps they need to take and the expected timeline for the refund."
+          ]
+        }
+      },
+      "output": {
+        "kb_query": "refund request headphones bought pair last they return policy warranty defective",
+        "tool_calls": [
+          "get_customer",
+          "get_order",
+          "get_product",
+          "check_refund_eligibility",
+          "search_knowledge_base"
+        ],
+        "tool_errors": [],
+        "reasoning_summary": "Collected customer/order/product/policy context for decisioning."
+      },
+      "confidence": 0.85,
+      "timestamp": "2026-04-19T09:31:19.910054+00:00"
+    },
+    {
+      "id": 1791,
+      "ticket_id": "TKT-001",
+      "step": "validate_outputs",
+      "action": "output_validation",
+      "input": {
+        "tool_count": 5
+      },
+      "output": {
+        "reasoning_summary": "Validated tool outputs for completeness and schema consistency.",
+        "validation_errors": []
+      },
+      "confidence": 0.88,
+      "timestamp": "2026-04-19T09:31:25.060723+00:00"
+    },
+    {
+      "id": 1792,
+      "ticket_id": "TKT-001",
+      "step": "tool",
+      "action": "get_order",
+      "input": {
+        "order_id": "ORD-1001"
+      },
+      "output": {
+        "ok": true,
+        "order": {
+          "notes": "Delivered on time. No issues logged at delivery.",
+          "amount": 129.99,
+          "status": "delivered",
+          "order_id": "ORD-1001",
+          "quantity": 1,
+          "refund_id": "RF-DE2A637E24E5",
+          "order_date": "2024-02-10",
+          "product_id": "P001",
+          "customer_id": "C001",
+          "delivery_date": "2024-02-14",
+          "refund_status": "refunded",
+          "return_deadline": "2024-03-15",
+          "refund_processed_at": "2026-04-19T08:47:53.720482"
+        },
+        "message": "order found"
+      },
+      "confidence": 0.95,
+      "timestamp": "2026-04-19T09:31:30.449253+00:00"
+    },
+    {
+      "id": 1793,
+      "ticket_id": "TKT-001",
+      "step": "decision_node",
+      "action": "state_validation",
+      "input": {
+        "ticket_id": "TKT-001"
+      },
+      "output": {
+        "state_validation": {
+          "order_id": "ORD-1001",
+          "latest_order_status": "delivered",
+          "latest_order_refund_status": "refunded"
+        },
+        "reasoning_summary": "Fetched latest order state before final decision to avoid stale actions."
+      },
+      "confidence": 0.93,
+      "timestamp": "2026-04-19T09:31:34.488762+00:00"
+    },
+    {
+      "id": 1794,
+      "ticket_id": "TKT-001",
+      "step": "tool",
+      "action": "send_reply",
+      "input": {
+        "message": "A refund has already been processed for order ORD-1001 on 2026-04-19T08:47:53.720482 (reference: RF-DE2A637E24E5). No further refund action is required.",
+        "ticket_id": "TKT-001"
+      },
+      "output": {
+        "ok": true,
+        "channel": "email",
+        "message": "reply queued for delivery"
+      },
+      "confidence": 0.9,
+      "timestamp": "2026-04-19T09:31:43.715138+00:00"
+    },
+    {
+      "id": 1795,
+      "ticket_id": "TKT-001",
+      "step": "decision_node",
+      "action": "decision_and_action",
+      "input": {
+        "tool_errors": [],
+        "classification": {
+          "urgency": "medium",
+          "category": "refund_or_return"
+        },
+        "validation_errors": []
+      },
+      "output": {
+        "decision": {
+          "action": "resolve",
+          "summary": "Refund was already processed for order ORD-1001; no duplicate refund needed.",
+          "confidence": 0.9
+        },
+        "final_status": "resolved",
+        "action_details": {
+          "reply": {
+            "ok": true,
+            "channel": "email",
+            "message": "reply queued for delivery"
+          },
+          "decision": {
+            "action": "resolve",
+            "summary": "Refund was already processed for order ORD-1001; no duplicate refund needed.",
+            "confidence": 0.9
+          },
+          "refund_state": {
+            "order_id": "ORD-1001",
+            "refund_id": "RF-DE2A637E24E5",
+            "refund_status": "refunded",
+            "refund_processed_at": "2026-04-19T08:47:53.720482"
+          }
+        },
+        "reasoning_summary": "Applied confidence rules, failure policy, and executed final actions."
+      },
+      "confidence": 0.9,
+      "timestamp": "2026-04-19T09:31:45.770599+00:00"
+    },
+    {
+      "id": 1796,
+      "ticket_id": "TKT-001",
+      "step": "celery_worker",
+      "action": "task_completed",
+      "input": {
+        "task_id": "040e04e0-53c0-446e-a5a6-c40d30de2f12",
+        "idempotency_key": "TKT-001"
+      },
+      "output": {
+        "status": "resolved",
+        "decision": {
+          "action": "resolve",
+          "summary": "Refund was already processed for order ORD-1001; no duplicate refund needed.",
+          "confidence": 0.9
+        }
+      },
+      "confidence": 0.9,
+      "timestamp": "2026-04-19T09:31:52.889299+00:00"
+    }
+  ]
+}
