@@ -10,6 +10,14 @@ This project is intentionally built to look and behave like an industry-grade sy
 - hosted database compatibility for low-ops deployment
 - complete auditability from first action to final decision
 
+## Live Demo and Hosted Deployment
+
+- Video demo: https://drive.google.com/file/d/1P9SgRv1jhJC-a665a_IbCvusFjqhK09t/view?usp=sharing
+- Live application (frontend + backend): http://4.174.128.13:8000/
+- FastAPI interactive docs for API exploration/testing: http://4.174.128.13:8000/docs
+
+The project is fully hosted, so reviewers can directly access the UI and test backend APIs from the hosted FastAPI documentation interface.
+
 ## Why This Architecture Matters
 
 Modern support automation requires more than model output quality. It needs architecture maturity, production realism, and operational safety.
@@ -264,12 +272,14 @@ Runtime continuity:
 
 ## Frontend Usage
 
-1. Open `http://localhost:8000`.
+1. Open `http://4.174.128.13:8000/` (hosted) or `http://localhost:8000` (local Docker run).
 2. Upload files (`tickets`, `customers`, `orders`, `products`, `knowledge_base`).
 3. Click **Upload Files**.
 4. Click **Process Tickets** for concurrent autonomous processing.
 5. Monitor ticket states, details, and actions.
 6. Click **Export Audit JSON** to export and download latest audit snapshot.
+
+For backend-only API testing, open `http://4.174.128.13:8000/docs`.
 
 ## Fault Tolerance and Reliability
 
