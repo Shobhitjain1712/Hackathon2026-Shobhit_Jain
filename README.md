@@ -127,7 +127,6 @@ Create `Backend/.env` from `Backend/.env.example`:
 ```env
 OPENAI_API_KEY=
 OPENAI_MODEL=gpt-4o-mini
-EMBEDDING_MODEL=text-embedding-3-small
 
 DB_HOST=
 DB_NAME=
