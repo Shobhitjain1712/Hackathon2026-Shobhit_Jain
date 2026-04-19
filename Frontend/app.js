@@ -28,10 +28,27 @@ let isProcessBusy = false;
 let isExportBusy = false;
 let activeMetricFilter = "all";
 let processingStartedAtMs = null;
-const DEFAULT_API_BASE = "http://localhost:8000";
+
+function normalizeApiBase(value) {
+  const trimmed = String(value || "").trim();
+  if (!trimmed) {
+    return "";
+  }
+  return trimmed.replace(/\/+$/, "");
+}
 
 function apiBase() {
-  return DEFAULT_API_BASE;
+  const runtimeConfigBase = normalizeApiBase(window.__APP_CONFIG__?.apiBaseUrl);
+  if (runtimeConfigBase) {
+    return runtimeConfigBase;
+  }
+
+  const originBase = normalizeApiBase(window.location?.origin);
+  if (originBase) {
+    return originBase;
+  }
+
+  return "http://localhost:8000";
 }
 
 function log(message) {

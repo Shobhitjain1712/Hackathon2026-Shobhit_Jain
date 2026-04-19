@@ -1,9 +1,11 @@
 from pathlib import Path
+import json
 
 from fastapi import FastAPI
 from fastapi import HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
+from fastapi.responses import Response
 
 from app.api.routes import router
 from app.core.config import get_settings
@@ -79,6 +81,14 @@ def serve_frontend_js() -> FileResponse:
 @app.get("/styles.css", include_in_schema=False)
 def serve_frontend_css() -> FileResponse:
     return _serve_asset("styles.css")
+
+
+@app.get("/runtime-config.js", include_in_schema=False)
+def serve_runtime_config_js() -> Response:
+    configured_api_base = (settings.frontend_api_base_url or "").strip()
+    runtime_payload = {"apiBaseUrl": configured_api_base}
+    script = f"window.__APP_CONFIG__ = Object.assign({{}}, window.__APP_CONFIG__, {json.dumps(runtime_payload)});\n"
+    return Response(content=script, media_type="application/javascript")
 
 
 app.include_router(router)

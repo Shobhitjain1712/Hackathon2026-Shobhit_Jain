@@ -26,6 +26,7 @@ class Settings(BaseSettings):
     request_rate_limit_per_minute: int = Field(default=80, alias="REQUEST_RATE_LIMIT_PER_MINUTE")
     kb_chunk_max_chars: int = Field(default=1200, alias="KB_CHUNK_MAX_CHARS")
     frontend_static_dir: str | None = Field(default=None, alias="FRONTEND_STATIC_DIR")
+    frontend_api_base_url: str | None = Field(default=None, alias="FRONTEND_API_BASE_URL")
 
     pgvector_enabled: bool = True
 
