@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     db_user: str = Field(alias="DB_USER")
     db_password: str = Field(alias="DB_PASSWORD")
     db_port: int = Field(default=5432, alias="DB_PORT")
-    db_sslmode: str = Field(default="require", alias="DB_SSLMODE")
+    db_sslmode: str = Field(default="disable", alias="DB_SSLMODE")
 
     redis_url: str = Field(default="redis://redis:6379/0", alias="REDIS_URL")
     ticket_lock_ttl_seconds: int = Field(default=900, alias="TICKET_LOCK_TTL_SECONDS")

@@ -12,6 +12,7 @@ services:
       - "8000:8000"
     depends_on:
       - redis
+      - postgres
     volumes:
       - ./Backend/audit_json:/app/Backend/audit_json
     restart: unless-stopped
@@ -25,6 +26,7 @@ services:
       - ./Backend/.env
     depends_on:
       - redis
+      - postgres
     volumes:
       - ./Backend/audit_json:/app/Backend/audit_json
     command: >
@@ -40,3 +42,19 @@ services:
     ports:
       - "6379:6379"
     restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: support-postgres
+    environment:
+      POSTGRES_DB: support
+      POSTGRES_USER: support
+      POSTGRES_PASSWORD: support
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:
