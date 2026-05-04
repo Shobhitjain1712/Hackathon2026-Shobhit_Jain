@@ -10,11 +10,9 @@ This project is intentionally built to look and behave like an industry-grade sy
 - hosted database compatibility for low-ops deployment
 - complete auditability from first action to final decision
 
-## Live Demo and Hosted Deployment
+## Live Demo
 
 - Video demo: https://drive.google.com/file/d/1P9SgRv1jhJC-a665a_IbCvusFjqhK09t/view?usp=sharing
-- Live application (frontend + backend): http://4.174.128.13:8000/
-- FastAPI interactive docs for API exploration/testing: http://4.174.128.13:8000/docs
 
 The project is fully hosted, so reviewers can directly access the UI and test backend APIs from the hosted FastAPI documentation interface.
 
